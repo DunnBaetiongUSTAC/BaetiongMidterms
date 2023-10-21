@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>GET</title>
+    <link href="Content/Site.css" rel="stylesheet" />
+    <link href="Content/bootstrap-grid.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1>Get Product/S</h1>
+            <table class="table table-bordered">
+                <thead>
+                <th>Product Id</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Product Description</th>
+                <th>Category Id</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Price</th>
+                </thead>
+                <tbody class="productTable">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+
+            <h1>Get by product code</h1>
+            <label>Product Code</label>
+            <input type="text" id="ProductCode" placeholder="Enter Product Code" />
+            <button class="btn-primary" id="btnsearch">Search</button>
+
+        </div>
+        <script src="Scripts/jquery-3.4.1.js"></script>
+        <script src="Scripts/bootstrap.js"></script>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                $.ajax({
+                    type: "get",
+                    url: "https://localhost:44374/api/products/Find/",
+                    statusCode: {
+                        200: function (response) {
+                            var productTable = $(".productTable");
+
+                            for (let i = 0; i < response.length; i++) {
+                                productTable.append(
+                                    "<tr>" +
+                                    "<td>" + response[i].ProductId + "</td>" +
+                                    "<td>" + response[i].ProductCode + "</td>" +
+                                    "<td>" + response[i].ProductName + "</td>" +
+                                    "<td>" + response[i].ProductDescription + "</td>" +
+                                    "<td>" + response[i].CategoryId + "</td>" +
+                                    "<td>" + response[i].Color + "</td>" +
+                                    "<td>" + response[i].Size + "</td>" +
+                                    "<td>" + response[i].Price + "</td>"  +
+                                    "</tr>"
+
+                                )
+                            }
+                        }
+                    }
+                });
+
+                
+
+                $("#btnsearch").click(function () {
+                    GetProductbyProductCode();
+                });
+            });
+
+            function GetProductbyProductCode(){
+                var productdata = new Object();
+                $.ajax({
+                    type: "Get",
+                    url: "/api/Products/Find/{productCode}",
+                    dataType: 'json',
+                    data: productdata,
+                    beforeSend: function (data) {
+                    },
+                    complete: function (data) {
+
+                    },
+                    success: function (data) {
+                        alert("Success");
+                    },
+                    error: function (data) {
+                        var error = JSON.parse(data.responseText);
+                        console.log(data.responseText);
+                        alert("Error");
+                    }
+                });
+            }
+
+            
+
+        </script>
+</body>
+</html>
